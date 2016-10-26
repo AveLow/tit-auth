@@ -1,0 +1,19 @@
+{
+  "name": "avelow/tit-auth",
+  "description": "Auth system for Tit framework.",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Alexis Merceron",
+      "email": "merceron.alexis.dev@gmail.com"
+    }
+  ],
+    "require": {
+      "avelow/tit-tit": "0.1.2.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Tit\\auth\\": "src"
+    }
+  }
+}
