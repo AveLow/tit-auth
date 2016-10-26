@@ -14,12 +14,14 @@ use Tit\lib\Components\CookieHandler;
 use Tit\lib\Components\SessionHandler;
 
 /**
- * Class TitAuthController
+ * Class TitAuthConnectedController
  * @package Tit\Auth\Controller
  *
  * Controller that only allow access to connected user.
  */
-abstract class TitAuthController extends Controller {
+abstract class TitAuthConnectedController extends Controller {
+
+
 
     /**
      * The connected user.
