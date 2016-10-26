@@ -1,6 +1,7 @@
 <?php
 namespace Tit\Auth\Manager;
 
+use Tit\Auth\Entity\TitAuthToken;
 use Tit\Auth\Entity\TitAuthUser;
 
 /**
@@ -12,19 +13,35 @@ use Tit\Auth\Entity\TitAuthUser;
 interface TitAuthManager{
 
     /**
-     * Return TitAuthUser by the session.
-     * @param  string $token
+     * Return TitAuthUser by the id.
+     * @param int $id
      * @return TitAuthUser
      */
-    public function getByTokenSession(string $token);
-    // For php7.1 public function getByTokenSession(string $token): TitAuthUser;
+    public function getById(int $id);
+    // For php7.1 public function getById(int $id): TitAuthUser;
 
     /**
-     * Return TitAuthUser by the cookies.
-     * @param  string $token
-     * @return TitAuthUser
+     * Return TitAuthToken by the cookies.
+     * @param  int $selector
+     * @return TitAuthToken
      */
-    public function getByTokenCookie(string $token);
-    // For php7.1 public function getByTokenCookie(string $token): TitAuthUser;
+    public function getToken(int $selector);
+    // For php7.1 public function getToken(int $selector): TitAuthToken;
+
+    /**
+     * Remove TitAuthToken by the user's id.
+     * @param  int $userId
+     * @return bool
+     */
+    public function removeToken(int $userId);
+    // For php7.1 public function removeToken(int $userId): bool;
+
+    /**
+     * Add TitAuthToken in the database.
+     * @param  TitAuthToken $tokenAuth
+     * @return bool
+     */
+    public function addToken(TitAuthToken $tokenAuth);
+    // For php7.1 public function addToken(TitAuthToken $tokenAuth): bool;
 
 }

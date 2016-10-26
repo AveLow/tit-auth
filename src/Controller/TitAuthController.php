@@ -104,22 +104,41 @@ abstract class TitAuthController extends Controller {
     public function checkConnected(){
     // For php7.1 public function checkConnected(): bool{
         if ($this->session->isConnected()){
-            $token_session = $this->session->getConnectedToken();
-            $user = $this->manager->getByTokenSession($token_session);
+            $idUser = $this->session->getConnectedId();
+            $user = $this->manager->getById($idUser);
 
-            if ($user==null){ return false; }
+            if ($user == null)
+                return false;
 
             $this->user = $user;
             return true;
         }elseif ($this->cookie->isConnected()){
-            $token_cookie = $this->cookie->getConnectedToken();
-            $user = $this->manager->getByTokenCookie($token_cookie);
+            $selector = $this->cookie->getConnectedSelector();
+            $tokenAuth = $this->manager->getToken($selector);
 
-            if ($user==null){ return false; }
+            if ($tokenAuth == null)
+                return false;
+
+            if ($tokenAuth->hasExpired()){
+                $this->manager->removeToken($tokenAuth->idUser());
+                return false;
+            }
+
+            $tokenCookie = $this->cookie->getConnectedToken();
+
+            if (!$this->util->verifyTokenCookie($tokenCookie, $tokenAuth))
+                return false;
+
+            $user = $this->manager->getById($tokenAuth->idUser());
+
+            if ($user==null)
+                return false;
 
             $this->user = $user;
+            $this->session->authenticate($user->id());
             return true;
-        }else{ return false; }
+        }
+        return false;
     }
 
     /**
