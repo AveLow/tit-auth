@@ -9,7 +9,7 @@
     }
   ],
     "require": {
-      "avelow/tit-tit": "0.1.3"
+      "avelow/tit-tit": "^0.2"
   },
   "autoload": {
     "psr-4": {
