@@ -69,7 +69,7 @@ class TitAuthUtil extends AppComponent {
         $this->manager->removeToken($user->id());
 
         do {
-            $selector = rand(0, 9999999999);
+            $selector = rand(0, 999999999);
         }while($this->manager->getToken($selector) != null);
 
         $token = $this->generateToken();
