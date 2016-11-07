@@ -50,7 +50,7 @@ abstract class TitAuthNotConnectedController extends Controller {
     public function exec(string $action,Request $req, Response $resp, array $args){
         // For php7.1 public function exec(string $action,RequestInterface $req, ResponseInterface $resp, array $args): ResponseInterface{
         if ($this->session->isConnected() || $this->cookie->isConnected())
-            $this->redirectTo();
+            return $this->redirectTo();
 
         return parent::exec($action, $req, $resp, $args);
     }

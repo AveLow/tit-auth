@@ -4,7 +4,6 @@ namespace Tit\Auth\Util;
 use Carbon\Carbon;
 use Slim\App;
 use Tit\Auth\Entity\TitAuthToken;
-use Tit\Auth\Entity\TitAuthUser;
 use Tit\Auth\Manager\TitAuthManager;
 use Tit\lib\AppComponent;
 use Tit\lib\Components\CookieHandler;
@@ -62,11 +61,22 @@ class TitAuthUtil extends AppComponent {
 
     /**
      * Set the cookie for the token remember me
-     * @param TitAuthUser $user
+     * @param int $id
      */
-    public function setTokenCookie(TitAuthUser $user){
-    // For php 7.1 public function setTokenCookie(TitAuthUser $user): void{
-        $this->manager->removeToken($user->id());
+    public function setTokenCookie(int $id){
+        // For php 7.1 public function setTokenCookie(int $id): void{
+        $expire = Carbon::now()->addMonth();
+        $this->setTokenCookieWithExpire($id, $expire);
+    }
+
+    /**
+     * Set the cookie for the token remember me with expire date choice.
+     * @param int $id
+     * @param Carbon $expire
+     */
+    public function setTokenCookieWithExpire(int $id, Carbon $expire){
+        // For php 7.1 public function setTokenCookieWithExpire(int $id, Carbon $expire): void{
+        $this->manager->removeToken($id);
 
         do {
             $selector = rand(0, 999999999);
@@ -74,11 +84,10 @@ class TitAuthUtil extends AppComponent {
 
         $token = $this->generateToken();
         $tokenHash = $this->hashPassword($token);
-        $expire = Carbon::now()->addMonth();
 
         $tokenAuth = new TitAuthToken(array(
             "selector" => $selector,
-            "idUser" => $user->id(),
+            "idUser" => $id,
             "token" => $tokenHash,
             "expire" => $expire
         ));
