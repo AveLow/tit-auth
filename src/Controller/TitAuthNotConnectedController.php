@@ -56,6 +56,19 @@ abstract class TitAuthNotConnectedController extends Controller {
     }
 
     /**
+     * @param string $action
+     * @param array $args
+     * @return String
+     */
+    public function execMethod(string $action, array $args){
+        // For php7.1 public function exec(string $action, array $args): String{
+        if ($this->session->isConnected() || $this->cookie->isConnected())
+            return $this->redirectTo();
+
+        return parent::execMethod($action, $args);
+    }
+
+    /**
      * Redirection if a user is connected.
      * @return Response
      */

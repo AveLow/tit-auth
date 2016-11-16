@@ -83,7 +83,7 @@ abstract class TitAuthConnectedController extends Controller {
      * @throws NotConnectedException
      */
     public function exec(string $action,Request $req, Response $resp, array $args){
-    // For php7.1 public function exec(string $action,RequestInterface $req, ResponseInterface $resp, array $args): ResponseInterface{
+        // For php7.1 public function exec(string $action,RequestInterface $req, ResponseInterface $resp, array $args): ResponseInterface{
         if (!$this->checkConnected()){
             $this->session->disconnect();
             $this->cookie->disconnect();
@@ -97,6 +97,29 @@ abstract class TitAuthConnectedController extends Controller {
         }
 
         return parent::exec($action, $req, $resp, $args);
+    }
+
+    /**
+     * @param string $action
+     * @param array $args
+     * @throws NotAllowedException
+     * @throws NotConnectedException
+     */
+    public function execMethod(string $action, array $args){
+        // For php7.1 public function exec(string $action,RequestInterface $req, ResponseInterface $resp, array $args): ResponseInterface{
+        if (!$this->checkConnected()){
+            $this->session->disconnect();
+            $this->cookie->disconnect();
+
+            throw new NotConnectedException();
+        }
+
+
+        if (!$this->checkRole()){
+            throw new NotAllowedException();
+        }
+
+        return parent::execMethod($action, $args);
     }
 
     /**
